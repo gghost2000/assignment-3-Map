@@ -1,7 +1,11 @@
 package com.study.assignment3.Map;
 
 import org.springframework.stereotype.Service;
+import org.apache.commons.collections4.Factory;
+import org.apache.commons.collections4.map.LazyMap;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -30,6 +34,16 @@ public class MapService {
         executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
         long endTime = System.nanoTime();
         return (endTime - startTime) / 1000000L;
+    }
+
+    public Map getLazyMap() {
+        Factory<Date> factory = new Factory<Date>() {
+            public Date create() {
+                return new Date();
+            }
+        };
+        Map<String, Date> lazyMap = LazyMap.lazyMap(new HashMap<String, Date>(), factory);
+        return lazyMap;
     }
 
 
