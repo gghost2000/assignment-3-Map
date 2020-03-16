@@ -19,16 +19,15 @@ public class MapService {
         long startTime = System.nanoTime();
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
         for (int i = 0; i < THREAD_POOL_SIZE; i++) {
-            executorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    for (int i = 0; i < 500000; i++) {
-                        Integer randomNum = (int) (Math.random() * 550000);
-                        Integer getValue = testMap.get(String.valueOf(randomNum));
-                        testMap.put(String.valueOf(randomNum), randomNum);
-                    }
-                }
-            });
+            executorService.execute(
+                    new Thread(() -> {
+                        for (int time = 0; time < 500000; time++) {
+                            Integer randomNum = (int) (Math.random() * 500000);
+                            Integer gatValue = testMap.get(String.valueOf(randomNum));
+                            testMap.put(String.valueOf(randomNum),randomNum);
+                        }
+                    })
+            );
         }
         executorService.shutdown();
         executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
